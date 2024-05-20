@@ -1,0 +1,15 @@
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\bin\Debug\net8.0-windows\app.exe
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\bin\Debug\net8.0-windows\app.deps.json
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\bin\Debug\net8.0-windows\app.runtimeconfig.json
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\bin\Debug\net8.0-windows\app.dll
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\bin\Debug\net8.0-windows\app.pdb
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.AssemblyInfoInputs.cache
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.AssemblyInfo.cs
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.csproj.CoreCompileInputs.cache
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.sourcelink.json
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.dll
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\refint\app.dll
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.pdb
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\app.genruntimeconfig.cache
+C:\Users\kingc\OneDrive\Documents\Programming\Chess-Bot\app\obj\Debug\net8.0-windows\ref\app.dll

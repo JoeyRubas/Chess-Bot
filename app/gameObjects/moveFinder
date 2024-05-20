@@ -1,0 +1,250 @@
+namespace gameObjects;
+
+public class moveFinder
+{
+    public HashSet<Move> GetLegalMoves(Board board)
+    {
+        private int[] BishopDirections = { -9, -7, 7, 9 };
+    private int[] RookDirections = { -8, 8, -1, 1 };
+    private int[] KingDirections = { -9, -7, 7, 9, -8, 8, -1, 1 };
+    private int[] KnightDirections = { -6, 6, -10, 10, -15, 15, -17, 17 };
+    private int[] WhitePromotionOptions = { WBishop, WKnight, WRook, WQueen };
+    private int[] BlackPromotionOptions = { BBishop, BKnight, BRook, BQueen };
+    ulong[] bitboard = board.bitboard;
+
+    ulong whitePieces = 0UL;
+        for (int i = 0; i< 6; i++)
+        {
+            whitePieces = whitePieces | bitboard[i];
+        }
+
+
+ulong blackPieces = 0UL;
+        for (int i = 6; i< 12; i++)
+        {
+            blackPieces = blackPieces | bitboard[i];
+        }
+
+        ulong allPieces = whitePieces | blackPieces;
+
+HashSet<Move> legalMoves = new HashSet<Move>(218);
+ulong mask = 1UL;
+for (int boardIndex = 0; boardIndex < 64; boardIndex++)
+{
+    int pieceType = -1;
+    for (int i = 0; i < 12; i++)
+    {
+        if ((bitboard[i] & mask) > 0)
+        {
+            pieceType = i;
+            break;
+        }
+    }
+    if (turn == whiteTurn)
+    {
+        switch (pieceType)
+        {
+            case WPawn:
+                if (((mask << 8) & allPieces) == 0)
+                {
+                    if (boardIndex > 47)
+                    {
+                        foreach (int peice in WhitePromotionOptions)
+                        {
+                            Move move = new Move(boardIndex, boardIndex + 8, pieceType);
+                            move.promotionPieceType = peice;
+                            move.enPassantLost = enPassant;
+                            legalMoves.Add(move);
+                        }
+                    }
+                    else
+                    {
+                        Move move = new Move(boardIndex, boardIndex + 8, pieceType);
+                        move.enPassantLost = enPassant;
+                        legalMoves.Add(move);
+                    }
+                }
+                if (((mask << 7) & blackPieces) > 0 & !(boardIndex % 8 == 0))
+                {
+                    if (boardIndex > 47)
+                    {
+                        foreach (int peice in WhitePromotionOptions)
+                        {
+                            Move move = new Move(boardIndex, boardIndex + 7, pieceType);
+                            move.promotionPieceType = peice;
+                            move.enPassantLost = enPassant;
+                            legalMoves.Add(move);
+                        }
+                    }
+                    else
+                    {
+                        Move move = new Move(boardIndex, boardIndex + 7, pieceType);
+                        move.enPassantLost = enPassant;
+                        legalMoves.Add(move);
+                    }
+                }
+                if (((mask << 9) & blackPieces) > 0 & !(boardIndex % 8 == 7))
+                {
+                    if (boardIndex > 47)
+                    {
+                        foreach (int peice in WhitePromotionOptions)
+                        {
+                            Move move = new Move(boardIndex, boardIndex + 9, pieceType);
+                            move.promotionPieceType = peice;
+                            move.enPassantLost = enPassant;
+                            legalMoves.Add(move);
+                        }
+                    }
+                    else
+                    {
+                        Move move = new Move(boardIndex, boardIndex + 9, pieceType);
+                        move.enPassantLost = enPassant;
+                        legalMoves.Add(move);
+                    }
+                }
+                if ((7 < boardIndex) & (boardIndex < 16) & (((mask << 16) & allPieces) == 0))
+                {
+                    Move move = new Move(boardIndex, boardIndex + 16, pieceType);
+                    move.enPassantLost = enPassant;
+                    move.enPassantGained = mask;
+                    legalMoves.Add(move);
+                }
+                break;
+
+            case WBishop:
+                addPieceMoves(legalMoves, boardIndex, blackPieces, allPieces, BishopDirections, 7, pieceType);
+                break;
+            case WKnight:
+                addPieceMoves(legalMoves, boardIndex, blackPieces, allPieces, KnightDirections, 1, pieceType);
+                break;
+            case WRook:
+                addPieceMoves(legalMoves, boardIndex, blackPieces, allPieces, RookDirections, 7, pieceType);
+                break;
+            case WQueen:
+                addPieceMoves(legalMoves, boardIndex, blackPieces, allPieces, RookDirections, 7, pieceType);
+                addPieceMoves(legalMoves, boardIndex, blackPieces, allPieces, BishopDirections, 7, pieceType);
+                break;
+            case WKing:
+                addPieceMoves(legalMoves, boardIndex, blackPieces, allPieces, KingDirections, 1, pieceType);
+                break;
+        }
+    }
+
+    if (turn == blackTurn)
+    {
+        switch (pieceType)
+        {
+            case BPawn:
+                if (((mask >> 8) & allPieces) == 0)
+                {
+                    if (boardIndex < 16)
+                    {
+                        foreach (int peice in WhitePromotionOptions)
+                        {
+                            Move move = new Move(boardIndex, boardIndex - 8, pieceType);
+                            move.promotionPieceType = peice;
+                            move.enPassantLost = enPassant;
+                            legalMoves.Add(move);
+                        }
+                    }
+                    else
+                    {
+                        Move move = new Move(boardIndex, boardIndex - 8, pieceType);
+                        move.enPassantLost = enPassant;
+                        legalMoves.Add(move);
+                    }
+                }
+                if (((mask >> 7) & whitePieces) > 0 & !(boardIndex % 8 == 7))
+                {
+                    if (boardIndex < 16)
+                    {
+                        foreach (int peice in WhitePromotionOptions)
+                        {
+                            Move move = new Move(boardIndex, boardIndex - 7, pieceType);
+                            move.promotionPieceType = peice;
+                            move.enPassantLost = enPassant;
+                            legalMoves.Add(move);
+                        }
+                    }
+                    else
+                    {
+                        Move move = new Move(boardIndex, boardIndex - 7, pieceType);
+                        move.enPassantLost = enPassant;
+                        legalMoves.Add(move);
+                    }
+                }
+                if (((mask >> 9) & whitePieces) > 0 & !(boardIndex % 8 == 0))
+                {
+                    if (boardIndex < 16)
+                    {
+                        foreach (int peice in WhitePromotionOptions)
+                        {
+                            Move move = new Move(boardIndex, boardIndex - 9, pieceType);
+                            move.promotionPieceType = peice;
+                            move.enPassantLost = enPassant;
+                            legalMoves.Add(move);
+                        }
+                    }
+                    else
+                    {
+                        Move move = new Move(boardIndex, boardIndex - 9, pieceType);
+                        move.enPassantLost = enPassant;
+                        legalMoves.Add(move);
+                    }
+                }
+                if ((47 < boardIndex) & (boardIndex < 56) & (((mask >> 16) & allPieces) == 0))
+                {
+                    Move move = new Move(boardIndex, boardIndex - 16, pieceType);
+                    move.enPassantLost = enPassant;
+                    move.enPassantGained = mask;
+                    legalMoves.Add(move);
+                }
+                break;
+            case BBishop:
+                addPieceMoves(legalMoves, boardIndex, whitePieces, allPieces, BishopDirections, 7, pieceType);
+                break;
+            case BKnight:
+                addPieceMoves(legalMoves, boardIndex, whitePieces, allPieces, KnightDirections, 1, pieceType);
+                break;
+            case BRook:
+                addPieceMoves(legalMoves, boardIndex, whitePieces, allPieces, RookDirections, 7, pieceType);
+                break;
+            case BQueen:
+                addPieceMoves(legalMoves, boardIndex, whitePieces, allPieces, RookDirections, 7, pieceType);
+                addPieceMoves(legalMoves, boardIndex, whitePieces, allPieces, BishopDirections, 7, pieceType);
+                break;
+            case BKing:
+                addPieceMoves(legalMoves, boardIndex, whitePieces, allPieces, KingDirections, 1, pieceType);
+                break;
+        }
+    }
+    mask = mask << 1;
+}
+//Castling
+if (turn == whiteTurn)
+{
+    if ((castling & 0x10) > 0 & (allPieces & 0xe) == 0)
+    {
+        legalMoves.Add(new Move((byte)(0x31 & castling)));
+    }
+    if ((castling & 0x20) > 0 & (allPieces & 0x60) == 0)
+    {
+        legalMoves.Add(new Move((byte)(0x32 & castling)));
+    }
+}
+if (turn == blackTurn)
+{
+    if ((castling & 0x40) > 0 & (allPieces & 0xe00000000000000) == 0)
+    {
+        legalMoves.Add(new Move((byte)(0xc4 & castling)));
+    }
+    if ((castling & 0x80) > 0 & (allPieces & 0x6000000000000000) == 0)
+    {
+        legalMoves.Add(new Move((byte)(0xc8 & castling)));
+    }
+}
+return legalMoves;
+    }
+
+
+}
